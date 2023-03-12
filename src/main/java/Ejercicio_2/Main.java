@@ -26,10 +26,10 @@ public class Main {
                     crearObra(obras);
                     break;
                 case "4" :
-                    crearPedido(clientes, obras);
+                    crearPedido(clientes, obras, pedidos);
                     break;
                 case "5" :
-                    mostrarPedidos(clientes);
+                    mostrarPedidos(clientes, pedidos);
                     break;
                 case "6" :
                     return;
@@ -40,11 +40,13 @@ public class Main {
         for (Cliente cliente : clientes) {
             System.out.println("-" + cliente);
         }
+        System.out.println("--- Fin de la lista ---");
     }
     public static void crearClientes(ArrayList<Cliente> clientes) {
         System.out.println("Nombre del cliente: ");
         String name = sc.nextLine();
         clientes.add(new Cliente(name));
+        System.out.println("--- Cliente creado ---");
     }
     public static void crearObra(ArrayList<Obra> obras) {
         System.out.println("Título de la obra: ");
@@ -55,16 +57,61 @@ public class Main {
         String tipo = sc.nextLine();
         if (tipo.equals("1")) {
             System.out.println("Número de páginas: ");
-            int numPaginas = sc.nextInt();
-            sc.nextLine();
-            obras.add(new Libro(titulo, autor, numPaginas));
+            try {
+                int numPaginas = sc.nextInt();
+                sc.nextLine();
+                obras.add(new Libro(titulo, autor, numPaginas));
+                System.out.println("--- Obra creada ---");
+            } catch (Exception e) {
+                System.out.println("Número de páginas no válido");
+            }
         } else if (tipo.equals("2")) {
             System.out.println("Duración (en minutos): ");
-            int duracion = sc.nextInt();
-            sc.nextLine();
-            obras.add(new Video(titulo, autor, duracion));
+            try {
+                int duracion = sc.nextInt();
+                sc.nextLine();
+                obras.add(new Video(titulo, autor, duracion));
+                System.out.println("--- Obra creada ---");
+            } catch (Exception e) {
+                System.out.println("Duración no válida");
+            }
         } else {
             System.out.println("Opción no válida");
         }
+    }
+    public static void crearPedido(ArrayList<Cliente> clientes, ArrayList<Obra> obras, ArrayList<Pedido> pedidos) {
+        System.out.println("¿Qué cliente quiere hacer el pedido?");
+        for (int i = 0; i < clientes.size(); i++) {
+            System.out.println((i + 1) + ". " + clientes.get(i));
+        }
+        try {
+            int cliente = sc.nextInt();
+            if (cliente < 1 || cliente > clientes.size())
+                throw new Exception("Cliente no válido");
+            sc.nextLine();
+            System.out.println("¿Qué obra quiere pedir?");
+            for (int i = 0; i < obras.size(); i++) {
+                System.out.println((i + 1) + ". " + obras.get(i));
+            }
+            int obra = sc.nextInt();
+            if (obra < 1 || obra > obras.size())
+                throw new Exception("Obra no válida");
+            sc.nextLine();
+            pedidos.add(new Pedido(clientes.get(cliente - 1), obras.get(obra - 1)));
+            System.out.println("--- Pedido creado ---");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public static void mostrarPedidos(ArrayList<Cliente> clientes, ArrayList<Pedido> pedidos) {
+        for (Cliente cliente : clientes) {
+            System.out.println(cliente + " ha pedido: ");
+            for (Pedido pedido : pedidos) {
+                if (pedido.getCliente().equals(cliente)) {
+                    System.out.println(pedido);
+                }
+            }
+        }
+        System.out.println("--- Fin de la lista ---");
     }
 }

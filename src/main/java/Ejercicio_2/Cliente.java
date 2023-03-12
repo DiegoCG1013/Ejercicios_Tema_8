@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 public class Cliente {
     private String name;
-    private int num;
 
     public Cliente(String name) {
         this.name = name;
@@ -13,6 +12,6 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return name + " (" + num + ")";
+        return name;
     }
 }

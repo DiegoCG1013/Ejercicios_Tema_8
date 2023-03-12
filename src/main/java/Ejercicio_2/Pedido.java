@@ -8,4 +8,13 @@ public class Pedido {
         this.cliente = cliente;
         this.obra = obra;
     }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    @Override
+    public String toString() {
+        return "- " + obra;
+    }
 }
